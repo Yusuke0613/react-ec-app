@@ -1,28 +1,31 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { store } from './app/store';
+import { ConnectedRouter } from 'connected-react-router';
 import App from './App';
+import createStore from './reducks/store/store';
 import reportWebVitals from './reportWebVitals';
-import './index.css';
-import { Route, Routes } from "react-router-dom";
-import './App.css';
-
 import "./assets/styles/tailwind.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import * as History from 'history';
 
 
 const container = document.getElementById('root')!;
-const root = createRoot(container);
+/** URIの履歴を保持するhistory変数 */
+const history = History.createBrowserHistory();
+/** reduxのストア定義 */
+const store = createStore(history);
 
-root.render(
+ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+    <ConnectedRouter history={history}>
     <App/>
+    </ConnectedRouter>
+
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
